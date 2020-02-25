@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cmath>
 using std::cout;
 using std::ifstream;
 using std::istringstream;
@@ -40,6 +41,12 @@ vector<vector<State>> ReadBoardFile(string path) {
     }
   }
   return board;
+}
+
+
+int Heuristic(int x1, int y1, int x2, int y2) {
+  int manhattanDistance = abs(x2 - x1) + abs(y2 - y1);
+  return manhattanDistance;
 }
 
 
