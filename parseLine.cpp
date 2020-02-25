@@ -9,6 +9,7 @@ using std::string;
 using std::vector;
 using std::istringstream;
 
+enum class State{kEmpty, kObstacle};
 
 vector<int> ParseLine(string line){
   istringstream sline(line);
@@ -35,6 +36,17 @@ vector<vector<int> > ReadBoardFile(string path) {
   return board;
 }
 
+// TODO: Create the CellString function here,
+// using the following return strings:
+// "⛰️   "
+// "0   "
+string CellString(State cell) {
+  if (cell == State::kObstacle) {
+    return "⛰️   ";
+  } else {
+    return "0   ";
+  }
+}
 
 void PrintBoard(const vector<vector<int> > board) {
   for (int i = 0; i < board.size(); i++) {
