@@ -50,7 +50,6 @@ int Heuristic(int x1, int y1, int x2, int y2) {
 }
 
 
-// TODO: Write the AddToOpen function here.
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
   vector<int> node = {x, y, g, h};
   openlist.push_back(node);
@@ -59,8 +58,17 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector
 
 
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2] ) {
+  
+  vector<vector<int>> open{};
+  int x = init[0];
+  int y = init[1];
+  int g = 0;
+  int h = Heuristic(x, y, goal[0], goal[1]);
+
+  AddToOpen(x, y, g, h, open, grid);
+
   cout << "No path found!" << "\n";
-  return vector<vector<State>> {};
+  return vector<vector<State>>{};
 }
 
 
