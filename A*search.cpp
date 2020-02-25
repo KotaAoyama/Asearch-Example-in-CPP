@@ -11,7 +11,7 @@ using std::string;
 using std::vector;
 using std::abs;
 
-enum class State {kEmpty, kObstacle};
+enum class State {kEmpty, kObstacle, kClosed};
 
 
 vector<State> ParseLine(string line) {
@@ -50,6 +50,14 @@ int Heuristic(int x1, int y1, int x2, int y2) {
 }
 
 
+// TODO: Write the AddToOpen function here.
+void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
+  vector<int> node = {x, y, g, h};
+  openlist.push_back(node);
+  grid[x][y] = State::kClosed;
+}
+
+
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2] ) {
   cout << "No path found!" << "\n";
   return vector<vector<State>> {};
@@ -73,6 +81,7 @@ void PrintBoard(const vector<vector<State>> board) {
   }
 }
 
+#include "test.cpp"
 
 int main() {
   int init[2]{0, 0};
@@ -80,4 +89,7 @@ int main() {
   auto board = ReadBoardFile("./data/1.board");
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
+  // Tests
+  TestHeuristic();
+  TestAddToOpen();
 }
