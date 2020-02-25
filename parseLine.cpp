@@ -28,7 +28,7 @@ vector<State> ParseLine(string line){
 }
 
 
-vector<vector<State> > ReadBoardFile(string path) {
+vector< vector<State> > ReadBoardFile(string path) {
   ifstream myfile (path);
   vector< vector<State> >board{};
   if (myfile) {
@@ -51,7 +51,7 @@ string CellString(State cell) {
 }
 
 
-void PrintBoard(const vector<vector<State> > board) {
+void PrintBoard(const vector< vector<State> > board) {
   for (int i = 0; i < board.size(); i++) {
     for (int j = 0; j < board[i].size(); j++) {
       cout << CellString(board[i][j]);
