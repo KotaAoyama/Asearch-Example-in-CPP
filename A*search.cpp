@@ -13,7 +13,7 @@ using std::vector;
 using std::abs;
 using std::sort;
 
-enum class State {kEmpty, kObstacle, kClosed, kPath};
+enum class State {kEmpty, kObstacle, kClosed, kPath, kStart, kFinish};
 
 const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
@@ -118,8 +118,12 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
     grid[x][y] = State::kPath;
 
     if (x == goal[0] && y == goal[1]) {
+      grid[init[0]][init[1]] = State::kStart;
+      grid[goal[0]][goal[1]] = State::kFinish;
       return grid;
     }
+
+    ExpandNeighbors(currentNode, goal, open, grid);
   }
 
   cout << "No path found!" << "\n";
@@ -131,6 +135,8 @@ string CellString(State cell) {
   switch(cell) {
     case State::kObstacle: return "⛰️   ";
     case State::kPath: return "🚗   ";
+    case State::kStart: return "🚦   ";
+    case State::kFinish: return "🏁   ";
     default: return "0   "; 
   }
 }
