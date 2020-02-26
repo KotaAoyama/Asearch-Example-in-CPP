@@ -63,6 +63,16 @@ int Heuristic(int x1, int y1, int x2, int y2) {
 }
 
 
+bool CheckValidCell(int x, int y, vector<vector<State>> &grid) {
+  bool isXOnGrid = (x >= 0 && x < grid.size());
+  bool isYOnGrid = (y >= 0 && y < grid[0].size());
+  if (isXOnGrid && isYOnGrid) {
+    return grid[x][y] == State::kEmpty;
+  }
+  return false;
+}
+
+
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
   openlist.push_back(vector<int> {x, y, g, h});
   grid[x][y] = State::kClosed;
@@ -128,4 +138,5 @@ int main() {
   TestAddToOpen();
   TestCompare();
   TestSearch();
+  TestCheckValidCell();
 }
