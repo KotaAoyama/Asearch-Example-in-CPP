@@ -15,6 +15,8 @@ using std::sort;
 
 enum class State {kEmpty, kObstacle, kClosed, kPath};
 
+const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
 
 vector<State> ParseLine(string line) {
     istringstream sline(line);
@@ -79,6 +81,24 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector
 }
 
 
+void ExpandNeighbors(const vector<int> &currentNode, int goal[2], vector<vector<int>> &openlist, vector<vector<State>> &grid) {
+  int x = currentNode[0];
+  int y = currentNode[1];
+  int g = currentNode[2];
+
+  for (int i = 0; i < 4; i++) {
+    int x2 = x + delta[i][0];
+    int y2 = y + delta[i][1];
+
+    if (CheckValidCell(x2, y2, grid)) {
+      int g2 = g + 1;
+      int h2 = Heuristic(x2, y2, goal[0], goal[1]);
+      AddToOpen(x2, y2, g2, h2, openlist, grid);
+    }
+  }
+}
+
+
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2] ) {
   
   vector<vector<int>> open{};
@@ -116,7 +136,7 @@ string CellString(State cell) {
 }
 
 
-void PrintBoard(const vector<vector<State>> board) {
+void PrintBoard(vector<vector<State>> board) {
   for (int i = 0; i < board.size(); i++) {
     for (int j = 0; j < board[i].size(); j++) {
       cout << CellString(board[i][j]);
@@ -139,4 +159,5 @@ int main() {
   TestCompare();
   TestSearch();
   TestCheckValidCell();
+  TestExpandNeighbors();
 }
