@@ -62,6 +62,6 @@ void PrintBoard(const vector< vector<State> > board) {
 
 
 int main() {
-  auto board = ReadBoardFile("./data/1.board");
+  auto board = ReadBoardFile("1.board");
   PrintBoard(board);
 }

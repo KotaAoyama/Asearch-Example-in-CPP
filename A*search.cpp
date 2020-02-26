@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -10,8 +11,9 @@ using std::istringstream;
 using std::string;
 using std::vector;
 using std::abs;
+using std::sort;
 
-enum class State {kEmpty, kObstacle, kClosed};
+enum class State {kEmpty, kObstacle, kClosed, kPath};
 
 
 vector<State> ParseLine(string line) {
@@ -44,15 +46,25 @@ vector<vector<State>> ReadBoardFile(string path) {
 }
 
 
+bool Compare(vector<int> a, vector<int> b) {
+  int f1 = a[2] + a[3];
+  int f2 = b[2] + b[3];
+  return f1 > f2;
+}
+
+
+void CellSort(vector<vector<int>> *v) {
+  sort(v->begin(), v->end(), Compare);
+}
+
+
 int Heuristic(int x1, int y1, int x2, int y2) {
-  int manhattanDistance = abs(x2 - x1) + abs(y2 - y1);
-  return manhattanDistance;
+  return abs(x2 - x1) + abs(y2 - y1);
 }
 
 
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
-  vector<int> node = {x, y, g, h};
-  openlist.push_back(node);
+  openlist.push_back(vector<int> {x, y, g, h});
   grid[x][y] = State::kClosed;
 }
 
@@ -60,12 +72,25 @@ void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2] ) {
   
   vector<vector<int>> open{};
+
   int x = init[0];
   int y = init[1];
   int g = 0;
   int h = Heuristic(x, y, goal[0], goal[1]);
-
   AddToOpen(x, y, g, h, open, grid);
+
+  while (open.size() > 0) {
+    CellSort(&open);
+    auto currentNode = open.back();
+    open.pop_back();
+    x = currentNode[0];
+    y = currentNode[1];
+    grid[x][y] = State::kPath;
+
+    if (x == goal[0] && y == goal[1]) {
+      return grid;
+    }
+  }
 
   cout << "No path found!" << "\n";
   return vector<vector<State>>{};
@@ -75,6 +100,7 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
 string CellString(State cell) {
   switch(cell) {
     case State::kObstacle: return "⛰️   ";
+    case State::kPath: return "🚗   ";
     default: return "0   "; 
   }
 }
@@ -94,10 +120,12 @@ void PrintBoard(const vector<vector<State>> board) {
 int main() {
   int init[2]{0, 0};
   int goal[2]{4, 5};
-  auto board = ReadBoardFile("./data/1.board");
+  auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
   // Tests
   TestHeuristic();
   TestAddToOpen();
+  TestCompare();
+  TestSearch();
 }
