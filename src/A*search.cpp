@@ -153,7 +153,6 @@ void PrintBoard(vector<vector<State>> board) {
   cout << "\n";
 }
 
-// #include "test.cpp"
 
 int main() {
   int init[2]{0, 0};
@@ -161,11 +160,4 @@ int main() {
   auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
-  // Tests
-  // TestHeuristic();
-  // TestAddToOpen();
-  // TestCompare();
-  // TestSearch();
-  // TestCheckValidCell();
-  // TestExpandNeighbors();
 }
