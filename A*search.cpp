@@ -151,19 +151,19 @@ void PrintBoard(vector<vector<State>> board) {
   }
 }
 
-#include "test.cpp"
+// #include "test.cpp"
 
 int main() {
   int init[2]{0, 0};
-  int goal[2]{4, 5};
+  int goal[2]{4, 11};
   auto board = ReadBoardFile("1.board");
   auto solution = Search(board, init, goal);
   PrintBoard(solution);
   // Tests
-  TestHeuristic();
-  TestAddToOpen();
-  TestCompare();
-  TestSearch();
-  TestCheckValidCell();
-  TestExpandNeighbors();
+  // TestHeuristic();
+  // TestAddToOpen();
+  // TestCompare();
+  // TestSearch();
+  // TestCheckValidCell();
+  // TestExpandNeighbors();
 }
